@@ -33,15 +33,15 @@ test("cpi worked as expected", () => {
     }),
   ];
 
+  const recentBlockhash = svm.latestBlockhash();
+
+  const tx = new Transaction();
+  tx.recentBlockhash = recentBlockhash;
+  tx.add(...ix);
+  tx.sign(payer, dataAccount);
+  svm.sendTransaction(tx);
+
   const doubleIt = () => {
-    const recentBlockhash = svm.latestBlockhash();
-
-    const tx = new Transaction();
-    tx.recentBlockhash = recentBlockhash;
-    tx.add(...ix);
-    tx.sign(payer, dataAccount);
-    svm.sendTransaction(tx);
-
     const ix2 = new TransactionInstruction({
       keys: [
         { pubkey: dataAccount.publicKey, isSigner: false, isWritable: true },
